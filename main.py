@@ -215,5 +215,5 @@ def unauthorized(e):
 
 if __name__ == '__main__':
     app.register_blueprint(wiki.wiki)
-    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), debug=True)  # DEBUG
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 80)), debug=True)  # DEBUG
     con.close()
