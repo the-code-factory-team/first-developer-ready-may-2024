@@ -1,0 +1,14 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <h1 style="text-align: center">База данных Ишимуры</h1>
+    {% for wiki in wikis %}
+        <a href="/wiki/{{wiki["id"]}}"><h2>{{wiki["title"]}}</h2>
+        <h2>Автор: {{wiki["author"]}}</h2>
+        <h2>Дата написания: {{wiki["datetime"]}}</h2></a>
+        <br>
+    {% endfor %}
+    <a href="/wiki_add">Обновить данные</a>
+    <br>
+    <a href="/">На главную</a>
+{% endblock %}

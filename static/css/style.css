@@ -1,0 +1,69 @@
+:root {
+    --light-red-color: #f26150;
+    --red-color: #dd4f46;
+}
+
+html, body {
+    font-family: "Noto Sans", sans-serif;
+}
+
+/* КНОПКИ */
+.but {
+    display: block;
+    padding: 10px 30px;
+    line-height: 20px;
+    font-size: 18px;
+    text-decoration: none;
+    color: #333;
+    border: 2px solid #333;
+    text-align: center;
+    transition: all .35s;
+    border-radius: 5px;
+    background: transparent;
+}
+.but:hover{
+    color: #fff;
+    background: black;
+    border-color: #333;
+    transition: all .35s;
+}
+
+.but-red {
+    color: var(--light-red-color);
+    border-color: var(--red-color);
+}
+.but-red:hover{
+    border-color: var(--light-red-color);
+    background: var(--red-color);
+    color: #fff;
+}
+
+.but-link {
+    color: #707070;
+    text-decoration: none;
+    transition: all .35s;
+}
+.but-link:hover{
+    color: #9e9e9e;
+    transition: all .35s;
+}
+
+
+/* ПОЛЯ */
+input {
+    background: transparent;
+    color: #9e9e9e;
+    padding: 7px;
+    font-size: 14px;
+    border: none;
+    border-bottom: 2px solid #c6c6c6;
+    outline:none;
+}
+input:hover, input:active, input:focus {
+    color: #9c9c9c;
+    border-bottom: 2px solid #9c9c9c;
+}
+input:active, input:focus {
+    color: #333;
+    border-bottom: 2px solid #333;
+}

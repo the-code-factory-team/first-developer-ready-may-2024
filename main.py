@@ -25,12 +25,14 @@ import hashlib
 import os
 import sqlite3
 import traceback
-from pprint import pprint
 
 from flask import Flask, render_template, redirect, session, url_for, request
+from flask_ckeditor import CKEditor
+from modules import wiki
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+ckeditor = CKEditor(app)
 
 acctypes = ["Игрок", "Редактор", "Модератор", "Администратор"]
 
@@ -74,11 +76,8 @@ def isloggin():
     return False
 
 
-def render_page(template, title="", loginneed=False, typeneed=[0], **kwargs):
-    if loginneed and not isloggin():
-        return redirect(url_for('account_login'))
-
-    elif typeneed[0] != 0 and int(session['acctype']) not in typeneed:
+def render_page(template, title="", typeneed=[0], **kwargs):
+    if typeneed[0] != 0 and int(session['acctype']) not in typeneed:
         return render_template('error.html', title="Ошибка", session=session,
                                error='У вас нет доступа для просмотра данной страницы!')
 
@@ -92,6 +91,9 @@ def index():
 
 @app.route('/register', methods=['GET', 'POST'])
 def account_register():
+    if isloggin():
+        return redirect(url_for('account_view'))
+
     if request.method == 'POST':
         error = "Данный адрес электронной почты уже зарегистрирован!"
         if len(databaserequest("SELECT * FROM accounts WHERE `email`=?", params=[request.form.get('email')])) == 0:
@@ -122,6 +124,9 @@ def account_register():
 
 @app.route('/auth', methods=['GET', 'POST'])
 def account_login():
+    if isloggin():
+        return redirect(url_for('account_view'))
+
     if request.method == 'POST':
         testaccount = databaserequest("SELECT * FROM accounts WHERE `nickname`=? OR `email`=?",
                                       params=[request.form.get('login'), request.form.get('login')], fetchone=True)
@@ -147,7 +152,6 @@ def account_view():
         return redirect(url_for('account_login'))
 
     if request.method == 'POST':
-        pprint(request.form)  # DEBUG
         databaserequest("UPDATE accounts SET about = ?, website = ?, vk = ?, tg = ?, discord = ?, "
                         "game_exp = ?, game_part = ? WHERE id = ?",
                         params=[request.form.get('about'), request.form.get('website'), request.form.get('vk'),
@@ -157,9 +161,7 @@ def account_view():
 
     account = databaserequest("SELECT * FROM `accounts` WHERE `id`=?", params=[session['id']],
                               fetchone=True)
-    pprint(account['about'])  # DEBUG
-    return render_page('account/settings.html', title="Настройки аккаунта", loginneed=True,
-                       acctypes=acctypes, account=account)
+    return render_page('account/settings.html', title="Настройки аккаунта", acctypes=acctypes, account=account)
 
 
 @app.route('/logout')
@@ -170,6 +172,25 @@ def account_quit():
     session.pop('last_name', None)
     session.pop('acctype', None)
     return redirect(url_for('index'))
+
+
+@app.route('/profile', defaults={'nickname': None})
+@app.route('/profile/<nickname>')
+def profile(nickname=None):
+    if not isloggin():
+        return redirect(url_for('account_login'))
+
+    if not nickname:
+        account = databaserequest("SELECT * FROM `accounts` WHERE `id`=?", params=[int(session['id'])],
+                                   fetchone=True)
+    elif 'id' in nickname:
+        account = databaserequest("SELECT * FROM `accounts` WHERE `id`=?", params=[int(nickname[1:])],
+                                  fetchone=True)
+    else:
+        account = databaserequest("SELECT * FROM `accounts` WHERE `nickname`=?", params=[nickname], fetchone=True)
+
+    return render_page('account/profile.html', title=f"Профиль {account['nickname']}",
+                       profile=account)
 
 
 @app.errorhandler(404)
@@ -187,6 +208,12 @@ def on_error(e):
                        error=f'Извините, произошла ошибка при выполнении запроса!'), 500
 
 
+@app.errorhandler(413)
+def unauthorized(e):
+    return redirect(url_for('account_login'))
+
+
 if __name__ == '__main__':
+    app.register_blueprint(wiki.wiki)
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)), debug=True)  # DEBUG
     con.close()

@@ -1,9 +1,13 @@
-<form action="/auth" method="post">
-    <input name="login" type="text" placeholder="Логин (мыло / ник)" required><br><br>
-    <input name="password" type="password" placeholder="Пароль" required><br><br>
-    {% if error %}
-        {{ error|safe }}<br><br>
-    {% endif %}
-    <button type="submit">Авторизоваться</button>
-    <br><a href="/register">У меня ещё нет аккаунта</a>
-</form>
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <form action="/auth" method="post">
+        <input name="login" type="text" placeholder="Логин (мыло / ник)" required><br><br>
+        <input name="password" type="password" placeholder="Пароль" required><br><br>
+        {% if error %}
+            {{ error|safe }}<br><br>
+        {% endif %}
+        <button class="but" type="submit">Авторизоваться</button>
+        <a class="but-link" href="/register">У меня ещё нет аккаунта</a>
+    </form>
+{% endblock %}

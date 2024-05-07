@@ -1,13 +1,17 @@
-<form action="/register" method="post">
-    <input name="email" type="email" placeholder="Мыло" required><br><br>
-    <input name="nickname" type="text" placeholder="Ник" required><br><br>
-    <input name="first_name" type="text" placeholder="Имя" required><br><br>
-    <input name="last_name" type="text" placeholder="Фамилия" required><br><br>
-    <input name="password" type="password" placeholder="Пароль" required><br><br>
-    <input name="password2" type="password" placeholder="Повтор пароля" required><br><br>
-    {% if error %}
-        {{ error|safe }}<br><br>
-    {% endif %}
-    <button type="submit">Зарегаться</button>
-    <br><a href="/auth">Я уже зарегистрирован</a>
-</form>
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <form action="/register" method="post">
+        <input name="email" type="email" placeholder="Мыло" required><br><br>
+        <input name="nickname" type="text" placeholder="Ник" required><br><br>
+        <input name="first_name" type="text" placeholder="Имя" required><br><br>
+        <input name="last_name" type="text" placeholder="Фамилия" required><br><br>
+        <input name="password" type="password" placeholder="Пароль" required><br><br>
+        <input name="password2" type="password" placeholder="Повтор пароля" required><br><br>
+        {% if error %}
+            {{ error|safe }}<br><br>
+        {% endif %}
+        <button class="but" type="submit">Зарегаться</button>
+        <a class="but-link" href="/auth">Я уже зарегистрирован</a>
+    </form>
+{% endblock %}
