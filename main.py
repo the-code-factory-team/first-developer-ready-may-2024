@@ -41,7 +41,7 @@ con.row_factory = sqlite3.Row
 cur = con.cursor()
 
 cur.execute(
-    """CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, nickname TEXT, acctype INTEGER DEFAULT (0), first_name TEXT, last_name TEXT, password TEXT, about TEXT NULL, website TEXT NULL, vk TEXT NULL, tg TEXT NULL, discord TEXT NULL, game_exp INTEGER DEFAULT(0), game_part INTEGER DEFAULT(0));""")
+    """CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, nickname TEXT, acctype INTEGER DEFAULT (0), first_name TEXT, last_name TEXT, password TEXT, about TEXT DEFAULT(''), website TEXT DEFAULT(''), vk TEXT DEFAULT(''), tg TEXT DEFAULT(''), discord TEXT DEFAULT(''), game_exp INTEGER DEFAULT(0), game_part INTEGER DEFAULT(0));""")
 cur.execute(
     """CREATE TABLE IF NOT EXISTS news (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, author TEXT, datetime TEXT, likes INTEGER DEFAULT(0));""")
 cur.execute(
