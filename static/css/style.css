@@ -7,6 +7,10 @@ html, body {
     font-family: "Noto Sans", sans-serif;
 }
 
+.error {
+    color: var(--red-color);
+}
+
 /* КНОПКИ */
 .but {
     display: block;
@@ -66,4 +70,64 @@ input:hover, input:active, input:focus, textarea:hover, textarea:active, textare
 input:active, input:focus, textarea:active, textarea:focus, select:active, select:focus {
     color: #333;
     border-bottom: 2px solid #333;
+}
+
+/* ЧАТ */
+.messages {
+    overflow-y: scroll;
+    max-height: 90vh;
+}
+.msg-area {
+    padding: 10px 0;
+    float: right;
+    width: 100%;
+}
+.msg-block {
+    border: 1px solid black;
+    padding: 5px 10px;
+    max-width: 45%;
+    border-radius: 7px;
+    transition: all .4s ease-out;
+    font-size: 1em;
+    width: fit-content;
+    float: left;
+}
+.msg-from-user {
+    background: #dbdbdb;
+    float: right;
+    margin-right: 0.5em;
+}
+.new-msg-hidden {
+    opacity: 0;
+    padding: 0;
+    margin-bottom: 0;
+}
+.msg-author {
+    display: block;
+    color: #333;
+    font-size: 0.9em;
+    margin-bottom: 0;
+    margin-top: 0.4em;
+    text-decoration: none;
+}
+.msg-text {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.msg-datetime {
+    text-align: right;
+    float: right;
+    font-size: 10px;
+    opacity: 0;
+    transition: all .2s ease-in;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.msg-area:hover {
+    background: #f5f5f5;
+
+    .msg-datetime {
+        opacity: 1;
+    }
 }

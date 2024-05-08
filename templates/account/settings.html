@@ -1,0 +1,29 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+<h1>Добро пожаловать,</h1>
+<h3>{{ session['first_name'] }} {{ session['last_name'] }} ({{ session['nickname'] }})</h3>
+<p>id: {{ session['id'] }}</p>
+<p>acctype: {{ acctypes[session['acctype']] }} ({{ session['acctype'] }})</p>
+
+<br>
+<form action="/account" method="post">
+    <textarea name="about" placeholder="Описание">{{ account['about'] }}</textarea><br><br>
+    <input name="website" type="url" placeholder="Личный сайт" value="{{ account['website'] }}"><br><br>
+    <input name="vk" type="url" placeholder="ВКонтакте" value="{{ account['vk'] }}"><br><br>
+    <input name="tg" type="url" placeholder="Telegram" value="{{ account['tg'] }}"><br><br>
+    <input name="discord" type="text" placeholder="Discord" value="{{ account['discord'] }}"><br><br>
+    <div><input name="game_exp" type="number" min="0" max="50" placeholder="Опыт игры" value="{{ account['game_exp'] }}"><p style="display: inline-block;"> лет</p></div><br>
+    <select name="game_part">
+        <option value="0" {% if account['game_part'] == 0 %} selected {% endif %}>Не указано</option>
+        <option value="1" {% if account['game_part'] == 1 %} selected {% endif %}>Dead Space 1</option>
+        <option value="2" {% if account['game_part'] == 2 %} selected {% endif %}>Dead Space 2</option>
+        <option value="3" {% if account['game_part'] == 3 %} selected {% endif %}>Dead Space 3</option>
+        <option value="4" {% if account['game_part'] == 4 %} selected {% endif %}>Dead Space Remake</option>
+    </select><br><br>
+    <button class="but" type="submit">Сохранить</button>
+</form>
+
+
+<br><br><a class="but but-red" style="max-width: 70px" href="/logout">Выйти</a>
+{% endblock %}

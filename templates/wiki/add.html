@@ -1,0 +1,19 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+<form action="{{url_for('wiki.add_wiki')}}" method="post">
+    <input type="text" id="title" name="title" placeholder="title">
+    <br>
+    {{ckeditor.load()}}
+    {{ckeditor.create()}}
+    <br>
+    <select id="category" name="category">
+	<option value="characters">Персонажи</option>
+	<option value="weapons">Оружие</option>
+	<option value="enemies">Враги</option>
+	<option value="gameplay">Геймплей</option>
+    </select>
+    <br>
+    <input type="submit" name="submit_button" value="Обновить данные">
+</form>
+{% endblock %}
