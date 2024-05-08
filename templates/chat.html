@@ -1,0 +1,95 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+<div style="margin: 0 auto; background-color: #fff">
+    <div id="messages" class="messages">
+    </div>
+    <div style="width:100%">
+        <form id="message-form" action="" method="post">
+            <input id="message" name="message" type="text" placeholder="Сообщение" style="width: 80%"/>
+            <button id="send-message" type="submit" class="but" style="display: inline-block;float:right">Отправить</button>
+        </form>
+        <br>
+        <p style="margin-top: 0" class="error" id="error"></p>
+    </div>
+</div>
+
+<script>
+    let messid = 0;
+    let messdatetime = '';
+
+    function checkNewMessages(last_message = $('#messages').children().last().children()[0].id) {
+        $.ajax({
+            url: '/chat',
+            method: 'post',
+            dataType: 'json',
+            data: {last_message_id: last_message},
+            success: function(data){
+                if ('new_messages' in data) {
+                    data.new_messages.forEach(function(message) {
+                        const author = data.authors[message[0]];
+                        $('#messages').append('<div class="msg-area"><div class="msg-block new-msg-hidden" id="' + message[0] + '">\n' +
+                                    '            <a class="msg-author" href="/profile/id'+ message[1] +'">'+ author.first_name + ' ' + author.last_name + ' (' + author.nickname + ')</a>\n' +
+                                    '            <p class="msg-text">' + message[2] + ' </p>\n' +
+                                    '            <p class="msg-datetime">' + message[3] + ' </p>\n' +
+                                    '        </div></div>');
+
+                        if (message[1] == {{ session['id'] }}) {
+                            $('#'+message[0]).addClass('msg-from-user');
+                        }
+
+                        setTimeout(function(){
+                            $('#'+message[0]).removeClass('new-msg-hidden');
+                            $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+                        }, 50);
+                    });
+                } else location.reload();
+            },
+            error: function(jqXHR, timeout, message) {
+                location.reload();
+            }
+        });
+
+        setTimeout(checkNewMessages, 2000);
+    }
+
+    $(document).ready(function () {
+        checkNewMessages(0);
+        $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+
+        $("#message-form").on('submit', function (event) {
+            event.preventDefault();
+            $('#error').html("");
+            if ($('#message').val().trim().length > 0) {
+
+                $.ajax({
+                    url: '/chat',
+                    method: 'post',
+                    dataType: 'json',
+                    data: {message: $('#message').val()},
+                    success: function(data){
+                        messid = data.id;
+                        messdatetime = data.datetime;
+                        if (data.ok === true) {
+                            $('#messages').append('<div class="msg-area"><div class="msg-block msg-from-user new-msg-hidden" id="' + messid + '">\n' +
+                                '            <a class="msg-author" href="/profile/id{{ session["id"] }}">{{ session["first_name"] }} {{ session["last_name"] }} ({{ session["nickname"] }})</a>\n' +
+                                '            <p class="msg-text">' + $('#message').val() + ' </p>\n' +
+                                '            <p class="msg-datetime">' + messdatetime + ' </p>\n' +
+                                '        </div></div>');
+
+                            setTimeout(function(){
+                                $('#'+messid).removeClass('new-msg-hidden');
+                                $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+                              }, 50);
+                        } else {
+                            $('#error').html(data.error);
+                        }
+
+                        $('#message').val("");
+                    }
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}
