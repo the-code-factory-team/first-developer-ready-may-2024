@@ -257,6 +257,10 @@ input:active, input:focus, textarea:active, textarea:focus, select:active, selec
         margin-right: 0.5em;
         margin-left: 0;
     }
+
+    .not-read {
+        background: var(--not-select-text-color);
+    }
 }
 .msg-area:hover {
     background: var(--hover-white-color) !important;

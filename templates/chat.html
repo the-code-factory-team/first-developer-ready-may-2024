@@ -22,9 +22,39 @@
 
     <script>
         let messid = 0;
-        let messdatetime = '';
+        let lastmess = 0;
+
+        let istabactive = true;
+        let isnotification = false;
+        let notif_status = 0;
+
+        let windowHeight = 0;
+
+        $(window).on("focus", function(){
+            istabactive = true;
+            isnotification = false;
+            document.title = "Чат - Dead Space Community";
+            $('link[rel="icon"], link[rel="shortcut icon"]').attr('href', '/static/img/favicon.png');
+            readMessages();
+        });
+
+        $(window).on("blur", function(){
+            istabactive = false;
+        });
 
         function checkNewMessages(last_message = $('#messages').children().last().children()[0].id) {
+            if (isnotification) {
+                if (!notif_status) {
+                    document.title = "Новое сообщение";
+                    $('link[rel="icon"], link[rel="shortcut icon"]').attr('href', '/static/img/new-message.png');
+                    notif_status = 1;
+                } else {
+                    document.title = "Чат - Dead Space Community";
+                    $('link[rel="icon"], link[rel="shortcut icon"]').attr('href', '/static/img/favicon.png');
+                    notif_status = 0;
+                }
+            }
+
             $.ajax({
                 url: '/chat',
                 method: 'post',
@@ -33,8 +63,11 @@
                 success: function(data){
                     if ('new_messages' in data) {
                         data.new_messages.forEach(function(message) {
+                            messid = message[0];
+                            lastmess = message[0];
+
                             const author = data.authors[message[0]];
-                            $('#messages').append('<div class="msg-area"><div class="new-msg-hidden" id="' + message[0] + '">\n' +
+                            $('#messages').append('<div class="msg-area"><div class="message new-msg-hidden" id="' + message[0] + '">\n' +
                                         '            <a href="/profile/id'+ message[1] +'">'+ author.first_name + ' ' + author.last_name + ' (' + author.nickname + ')</a>\n' +
                                         '            <p lang="ru">' + message[2] + ' </p>\n' +
                                         '            <p>' + message[3] + ' </p>\n' +
@@ -44,16 +77,24 @@
                                 $('#'+message[0]).addClass('msg-from-user');
                             }
 
+                            $('#'+message[0]).addClass('not-read');
+
                             setTimeout(function(){
                                 $('#'+message[0]).removeClass('new-msg-hidden');
                             }, 50);
                         });
-                        if (messid !== 0 || last_message === 0) {
-                            $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+
+                        if (messid && messid == lastmess && !isnotification) {
+
+                            if (!istabactive) {
+                                const audio = new Audio("/static/sounds/new-message.mp3");
+                                audio.play();
+                                isnotification = true;
+                            }
+                            else $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
                         }
 
                         messid = 0;
-                        messdatetime = 0;
 
                     } else location.reload();
                 },
@@ -62,26 +103,39 @@
                 }
             });
 
+            setTimeout(readMessages, 1000);
             setTimeout(checkNewMessages, 2000);
+        }
+
+        function readMessages() {
+            if(!isnotification) {
+                $('.message').each(function () {
+                    const self = $(this),
+                        height = self.offset().top + self.height() * 3;
+                    if ($(document).scrollTop() + windowHeight - height >= 100) {
+                        self.removeClass('not-read');
+                    }
+                });
+            }
         }
 
         $(document).ready(function () {
             checkNewMessages(0);
-            $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+
+            windowHeight = $(window).height();
+
+            $('#messages').on('scroll', readMessages);
 
             $("#message-form").on('submit', function (event) {
                 event.preventDefault();
                 $('#error').html("");
                 if ($('#message').val().trim().length > 0) {
-
                     $.ajax({
                         url: '/chat',
                         method: 'post',
                         dataType: 'json',
                         data: {message: $('#message').val()},
                         success: function(data){
-                            messid = data.id;
-                            messdatetime = data.datetime;
                             if (data.ok === true) {
                                 $('#message').val("");
                             } else {
