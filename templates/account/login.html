@@ -1,0 +1,23 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <div class="page-title">
+        <h1>Авторизация</h1>
+    </div>
+
+    <form action="/auth" method="post" class="form-block">
+        <label for="login">Логин (почта или никнейм)</label>
+        <input id="login" name="login" type="text" placeholder="nickname" required>
+
+        <label for="password">Пароль</label>
+        <input id="password" name="password" type="password" placeholder="********" required>
+
+        {% if redirect %} <input name="redirect" type="hidden" value="{{ redirect }}"> {% endif %}
+        {% if error %}
+            {{ error|safe }}<br><br>
+        {% endif %}
+
+        <button class="but center" type="submit">Авторизоваться</button>
+        <a class="but-link center" href="/register">У меня ещё нет аккаунта</a>
+    </form>
+{% endblock %}

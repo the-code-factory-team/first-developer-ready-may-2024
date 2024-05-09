@@ -22,59 +22,17 @@
 """
 import hashlib
 import os
-import sqlite3
 import traceback
-import pytz
 
-from flask import Flask, render_template, redirect, session, url_for, request, jsonify
+from flask import render_template, redirect, session, url_for, request, jsonify, Flask
 from flask_ckeditor import CKEditor
-from datetime import datetime
-from modules import wiki
+
+from modules import wiki, news
+from modules.functions import cur, con, acctypes, isloggin, databaserequest, get_datetime_now
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 ckeditor = CKEditor(app)
-
-acctypes = ["Игрок", "Редактор", "Модератор", "Администратор"]
-
-con = sqlite3.connect("database.db", check_same_thread=False)
-cur = con.cursor()
-
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, nickname TEXT, acctype INTEGER DEFAULT (0), first_name TEXT, last_name TEXT, password TEXT, about TEXT DEFAULT(''), website TEXT DEFAULT(''), vk TEXT DEFAULT(''), tg TEXT DEFAULT(''), discord TEXT DEFAULT(''), game_exp INTEGER DEFAULT(0), game_part INTEGER DEFAULT(0));""")
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS news (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, author TEXT, datetime TEXT, likes INTEGER DEFAULT(0));""")
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS wiki (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, author TEXT, datetime TEXT, likes INTEGER DEFAULT(0), category INTEGER);""")
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS gallery (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, author TEXT, datetime TEXT, likes INTEGER DEFAULT(0));""")
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS chat (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, message TEXT, datetime TEXT);""")
-
-
-def databaserequest(text, params=[], commit=False, fetchone=False, aslist=False):
-    cur.row_factory = sqlite3.Row
-    if aslist:
-        cur.row_factory = None
-    dbrequest = cur.execute(f"""{text}""", params)
-    if not commit:
-        if fetchone:
-            return dbrequest.fetchone()
-        return dbrequest.fetchall()
-    else:
-        con.commit()
-    return True
-
-
-def isloggin():
-    if "id" in session:
-        testaccount = databaserequest("SELECT * FROM accounts WHERE id = ?",
-                                      params=[session['id']])
-        if testaccount:
-            return True
-        else:
-            return redirect(url_for('account_quit'))
-    return False
 
 
 @app.route('/')
@@ -135,19 +93,21 @@ def account_login():
                 if 'redirect' in session:
                     redirecturl = session['redirect']
                     session.pop('redirect', None)
-                    return redirect("/" + redirecturl.replace("+", "/"))
+                    return redirect(redirecturl)
                 return redirect(url_for('account_view'))
 
         return render_template('account/login.html', title="Авторизация", session=session,
                                error="Неверный логин или пароль! 😔")
     else:
+        if request.args.get("redirect"):
+            session['redirect'] = request.args.get("redirect")
         return render_template('account/login.html', title="Авторизация", session=session)
 
 
 @app.route('/account', methods=['GET', 'POST'])
 def account_view():
     if not isloggin():
-        session['redirect'] = "account"
+        session['redirect'] = url_for("account_view")
         return redirect(url_for('account_login'))
 
     if request.method == 'POST':
@@ -178,7 +138,7 @@ def account_quit():
 @app.route('/profile/<nickname>')
 def profile(nickname=None):
     if not isloggin():
-        session['redirect'] = "profile"
+        session['redirect'] = url_for("profile")
         return redirect(url_for('account_login'))
 
     if not nickname:
@@ -197,19 +157,19 @@ def profile(nickname=None):
 @app.route('/chat', methods=['GET', 'POST'])
 def chat_page():
     if not isloggin():
-        session['redirect'] = "chat"
+        session['redirect'] = url_for("chat_page")
         return redirect(url_for('account_login'))
 
     if request.method == 'POST':
         if request.form.get('message'):
-            moscow_time = datetime.now(pytz.timezone('Europe/Moscow'))
+            moscow_time = get_datetime_now()
 
             databaserequest('INSERT INTO `chat`(`user_id`, `message`, `datetime`) VALUES (?, ?, ?)',
                             params=[int(session['id']), request.form.get("message"),
-                                    moscow_time.strftime('%d.%m.%Y %H:%I:%S')],
+                                    moscow_time],
                             commit=True)
             if cur.lastrowid != 0:
-                return jsonify(ok=True, id=cur.lastrowid, datetime=moscow_time.strftime('%d.%m.%Y %H:%I:%S'))
+                return jsonify(ok=True, id=cur.lastrowid, datetime=moscow_time)
             return jsonify(ok=False, error="Произошла ошибка при отправке сообщения! 😱")
         else:
             authors = {}
@@ -222,7 +182,7 @@ def chat_page():
                                    'nickname': author[2]}
             return jsonify(ok=True, new_messages=new_messages, authors=authors)
 
-    return render_template('chat.html', title="Онлайн-чат", session=session)
+    return render_template('chat.html', title="Чат", session=session)
 
 
 @app.errorhandler(404)
@@ -245,7 +205,14 @@ def unauthorized(e):
     return redirect(url_for('account_login'))
 
 
-if __name__ == '__main__':
+def create_app():
+    global app
     app.register_blueprint(wiki.wiki)
+    app.register_blueprint(news.news)
+    return app
+
+
+if __name__ == '__main__':
+    create_app()
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 80)), debug=True)  # DEBUG
     con.close()

@@ -1,0 +1,21 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <div class="page-title">
+        <h1>База данных Ишимуры</h1>
+    </div>
+
+    <div class="center">
+        <h3 style="margin-bottom: 2em">{{ category }}</h3>
+
+        {% for wiki in wikis %}
+            <a href="/wiki/{{wiki["id"]}}"><h2>{{wiki["title"]}}</h2>
+            <h2>Автор: {{wiki["author"]}}</h2>
+            <h2>Дата написания: {{wiki["datetime"]}}</h2></a>
+            <br>
+        {% endfor %}
+
+        {% if 'id' in session %}{% if session['acctype'] >= 1 %}<a class="but right" href="/wiki_add">Добавить страницу</a>{% endif %}{% endif %}
+        <a class="but but-red center" href="/wiki">Назад</a>
+    </div>
+{% endblock %}

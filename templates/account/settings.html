@@ -1,0 +1,46 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <div class="page-title">
+        <h1>Настройки аккаунта</h1>
+    </div>
+
+    <div class="center">
+        <h2 style="margin-bottom: 0">Добро пожаловать,</h2>
+        <h3 style="margin: 0;font-weight: 400">{{ session['first_name'] }} {{ session['last_name'] }} ({{ session['nickname'] }})</h3>
+        <p style="margin-top: 0">{{ acctypes[session['acctype']] }}</p>
+    </div>
+
+    <form action="/account" method="post" class="form-block" style="width: 70%">
+
+        <label for="about">Описание</label>
+        <textarea id="about" name="about" style="resize: none;" placeholder="Интересная информация о Вас">{{ account['about'] }}</textarea>
+
+        <label for="website">Личный сайт</label>
+        <input id="website" name="website" type="url" placeholder="https://example.com" value="{{ account['website'] }}">
+
+        <label for="vk">ВКонтакте</label>
+        <input id="vk" name="vk" type="url" placeholder="https://vk.com/my_vk" value="{{ account['vk'] }}">
+
+        <label for="tg">Telegram</label>
+        <input id="tg" name="tg" type="url" placeholder="https://t.me/my_tg" value="{{ account['tg'] }}">
+
+        <label for="discord">Discord</label>
+        <input id="discord" name="discord" type="text" placeholder="my_discord" value="{{ account['discord'] }}">
+
+        <label for="game_part">Я играю в</label>
+        <select id="game_part" name="game_part">
+            <option value="0" {% if account['game_part'] == 0 %} selected {% endif %}>Выберите часть игры</option>
+            <option value="1" {% if account['game_part'] == 1 %} selected {% endif %}>Dead Space 1</option>
+            <option value="2" {% if account['game_part'] == 2 %} selected {% endif %}>Dead Space 2</option>
+            <option value="3" {% if account['game_part'] == 3 %} selected {% endif %}>Dead Space 3</option>
+            <option value="4" {% if account['game_part'] == 4 %} selected {% endif %}>Dead Space Remake</option>
+        </select>
+
+        <label for="game_exp">Я играю уже (лет)</label>
+        <input id="game_exp" name="game_exp" type="number" min="0" max="50" value="{{ account['game_exp'] }}">
+
+        <button class="but but-green center" type="submit">Сохранить</button>
+        <a style="margin-top: 3em" class="but but-red center" href="/logout">Выйти</a>
+    </form>
+{% endblock %}

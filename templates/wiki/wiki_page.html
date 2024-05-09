@@ -1,0 +1,22 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+{% for item in wiki %}
+    <div class="page-title">
+        <h1>{{item["title"]}}</h1>
+    </div>
+
+    <p>Автор: {{item["author"]}}</p>
+
+    {{item["content"] | safe}}
+
+    {% if 'id' in session %}
+        {% if session["acctype"] >= 1 %}
+            <a class="but" href='/wiki_edit/{{item["id"]}}' style="margin-top: 1.5em; display: inline-block">Редактировать</a>
+            <a class="but but-red" href='/wiki_delete/{{item["id"]}}' style="margin-top: 1.5em; display: inline-block">Удалить</a>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+<a class="but but-red center" href='/wiki'>Назад</a>
+{% endblock %}

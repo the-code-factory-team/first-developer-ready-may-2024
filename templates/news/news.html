@@ -1,0 +1,24 @@
+{% extends 'pagetemplate.html' %}
+
+{% block content %}
+    <div class="page-title">
+        <h1>Новости</h1>
+    </div>
+
+    {% if 'id' in session %}
+        {% if session['acctype'] > 0 %}
+            <a class="but right" href="/news_actions?action=add" style="margin-bottom: 2em">Добавить новость</a>
+        {% endif %}
+    {% endif %}
+
+    {% for new in news %}
+    <a class="news-block" href="/news/{{ new['id'] }}">
+        <h4>{{ new['title'] }}</h4>
+        <p class="news-datetime">{{ new['datetime'] }}</p>
+        <p>{{ new['content'][:100]|striptags }}...</p>
+    </a>
+    {% endfor %}
+
+<a class="but but-red center" href="/" style="margin-top: 2em">На главную</a>
+
+{% endblock %}

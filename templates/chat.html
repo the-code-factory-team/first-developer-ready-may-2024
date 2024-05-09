@@ -1,0 +1,96 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <a href="/" class="but but-red left">❮</a>
+    <div class="page-title">
+        <h1>Чат</h1>
+    </div>
+
+    <div style="margin: 0 auto; background-color: #fff">
+        <div id="messages" class="messages">
+        </div>
+        <hr>
+        <div style="width:95%;margin: 0 auto;overflow-x: auto">
+            <form id="message-form" action="" method="post" style="display: inline">
+                <input id="message" name="message" type="text" placeholder="Сообщение" style="width: 75%;display: inline-block"/>
+                <button id="send-message" type="submit" class="but" style="display: inline-block;margin-left: 3%;width: 5em">ᐅ</button>
+            </form>
+            <br>
+            <p style="margin-top: 0" class="error" id="error"></p>
+        </div>
+    </div>
+
+    <script>
+        let messid = 0;
+        let messdatetime = '';
+
+        function checkNewMessages(last_message = $('#messages').children().last().children()[0].id) {
+            $.ajax({
+                url: '/chat',
+                method: 'post',
+                dataType: 'json',
+                data: {last_message_id: last_message},
+                success: function(data){
+                    if ('new_messages' in data) {
+                        data.new_messages.forEach(function(message) {
+                            const author = data.authors[message[0]];
+                            $('#messages').append('<div class="msg-area"><div class="new-msg-hidden" id="' + message[0] + '">\n' +
+                                        '            <a href="/profile/id'+ message[1] +'">'+ author.first_name + ' ' + author.last_name + ' (' + author.nickname + ')</a>\n' +
+                                        '            <p lang="ru">' + message[2] + ' </p>\n' +
+                                        '            <p>' + message[3] + ' </p>\n' +
+                                        '        </div></div>');
+
+                            if (message[1] == {{ session['id'] }}) {
+                                $('#'+message[0]).addClass('msg-from-user');
+                            }
+
+                            setTimeout(function(){
+                                $('#'+message[0]).removeClass('new-msg-hidden');
+                            }, 50);
+                        });
+                        if (messid !== 0 || last_message === 0) {
+                            $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+                        }
+
+                        messid = 0;
+                        messdatetime = 0;
+
+                    } else location.reload();
+                },
+                error: function(jqXHR, timeout, message) {
+                    location.reload();
+                }
+            });
+
+            setTimeout(checkNewMessages, 2000);
+        }
+
+        $(document).ready(function () {
+            checkNewMessages(0);
+            $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+
+            $("#message-form").on('submit', function (event) {
+                event.preventDefault();
+                $('#error').html("");
+                if ($('#message').val().trim().length > 0) {
+
+                    $.ajax({
+                        url: '/chat',
+                        method: 'post',
+                        dataType: 'json',
+                        data: {message: $('#message').val()},
+                        success: function(data){
+                            messid = data.id;
+                            messdatetime = data.datetime;
+                            if (data.ok === true) {
+                                $('#message').val("");
+                            } else {
+                                $('#error').html(data.error);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

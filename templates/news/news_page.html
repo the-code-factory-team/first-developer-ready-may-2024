@@ -1,0 +1,23 @@
+{% extends 'pagetemplate.html' %}
+
+{% block content %}
+    <div class="page-title">
+        <h1 style="text-align: left">{{ cur_news['title'] }}</h1>
+    </div>
+
+    <p style="margin-bottom: 0;font-size:0.7em">{{ author }} опубликовал {{ cur_news['datetime'] }}</p>
+    {% if cur_news['datetime_update']|length > 0 %}<p style="margin: 0;font-size: 0.7em">{{ author_update }} обновил {{ cur_news['datetime_update'] }}</p>{% endif %}
+
+    <div style="margin-top: 2em">
+        {{ cur_news['content']|safe }}
+    </div>
+
+    {% if 'id' in session %}
+        {% if session['acctype'] > 0 %}
+            <a href="/news_actions?action=edit&id={{ cur_news['id'] }}" class="but left">Редактировать</a><br>
+        {% endif %}
+    {% endif %}
+
+    <a class="but but-red center" href="/news" style="margin-top: 2em">Назад</a>
+
+{% endblock %}
