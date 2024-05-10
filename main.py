@@ -27,7 +27,7 @@ import traceback
 from flask import render_template, redirect, session, url_for, request, jsonify, Flask
 from flask_ckeditor import CKEditor
 
-from modules import wiki, news
+from modules import wiki, news, find_friends
 from modules.functions import cur, con, acctypes, isloggin, databaserequest, get_datetime_now
 
 app = Flask(__name__)
@@ -111,11 +111,9 @@ def account_view():
         return redirect(url_for('account_login'))
 
     if request.method == 'POST':
-        databaserequest("UPDATE accounts SET about = ?, website = ?, vk = ?, tg = ?, discord = ?, "
-                        "game_exp = ?, game_part = ? WHERE id = ?",
+        databaserequest("UPDATE accounts SET about = ?, website = ?, vk = ?, tg = ?, discord = ? WHERE id = ?",
                         params=[request.form.get('about'), request.form.get('website'), request.form.get('vk'),
-                                request.form.get('tg'), request.form.get('discord'), request.form.get('game_exp'),
-                                request.form.get('game_part'), session['id']],
+                                request.form.get('tg'), request.form.get('discord'), session['id']],
                         commit=True)
 
     account = databaserequest("SELECT * FROM `accounts` WHERE `id`=?", params=[session['id']],
@@ -209,6 +207,7 @@ def create_app():
     global app
     app.register_blueprint(wiki.wiki)
     app.register_blueprint(news.news)
+    app.register_blueprint(find_friends.find_friends)
     return app
 
 

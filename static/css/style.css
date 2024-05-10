@@ -10,6 +10,9 @@
     --not-select-border-color: #c6c6c6;
     --select-text-color: #9c9c9c;
     --text-muted: #c3c3c3;
+    --link-text-color: #707070;
+    --link-hover-text-color: #9e9e9e;
+    --help-text-color: #6c6b6b;
 }
 body {
     display: flex;
@@ -127,9 +130,28 @@ footer {
         width: 100%;
         display: block;
     }
+
+    input[type=checkbox] {
+        width: fit-content;
+        display: inline;
+    }
 }
 
-input, textarea, select {
+.url-in-text {
+    display: inline;
+}
+
+.url-in-text:hover {
+    opacity: 0.8;
+}
+
+.help-text {
+    color: var(--help-text-color);
+    display: inline;
+    font-size: calc(100% - 0.2em);
+}
+
+input:not([type=checkbox]), textarea, select {
     background: transparent;
     color: var(--not-select-text-color);
     padding: 0.4em 0;
@@ -139,11 +161,11 @@ input, textarea, select {
     outline:none;
     margin: 0 0 1.5em 0;
 }
-input:hover, input:active, input:focus, textarea:hover, textarea:active, textarea:focus, select:hover, select:active, select:focus {
+input:not([type=checkbox]):hover, input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:hover, textarea:active, textarea:focus, select:hover, select:active, select:focus {
     color: var(--select-text-color);
     border-bottom: 0.15em solid var(--select-text-color);
 }
-input:active, input:focus, textarea:active, textarea:focus, select:active, select:focus {
+input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:active, textarea:focus, select:active, select:focus {
     color: var(--black-text-color);
     border-bottom: 0.15em solid var(--black-text-color);
 }
@@ -195,12 +217,18 @@ input:active, input:focus, textarea:active, textarea:focus, select:active, selec
 }
 
 .but-link {
-    color: #707070;
+    color: var(--link-text-color);
     transition: all .35s;
 }
 .but-link:hover{
-    color: #9e9e9e;
+    color: var(--link-hover-text-color);
     transition: all .35s;
+}
+
+.but:disabled,.but[disabled] {
+    border-color: var(--link-text-color);
+    background: var(--select-text-color);
+    color: var(--link-text-color);
 }
 
 

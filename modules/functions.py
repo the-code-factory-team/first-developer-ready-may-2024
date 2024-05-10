@@ -12,8 +12,7 @@ cur = con.cursor()
 cur.execute(
     """CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT, nickname TEXT, 
     acctype INTEGER DEFAULT (0), first_name TEXT, last_name TEXT, password TEXT, about TEXT DEFAULT(''), 
-    website TEXT DEFAULT(''), vk TEXT DEFAULT(''), tg TEXT DEFAULT(''), discord TEXT DEFAULT(''), game_exp 
-    INTEGER DEFAULT(0), game_part INTEGER DEFAULT(0));""")
+    website TEXT DEFAULT(''), vk TEXT DEFAULT(''), tg TEXT DEFAULT(''), discord TEXT DEFAULT(''));""")
 cur.execute(
     """CREATE TABLE IF NOT EXISTS news (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, author 
     INTEGER, datetime TEXT, author_update INTEGER DEFAULT (0), datetime_update TEXT DEFAULT (''), likes INTEGER DEFAULT(0));""")
@@ -22,12 +21,16 @@ cur.execute(
     TEXT, datetime TEXT, likes INTEGER DEFAULT(0), category INTEGER, author_update TEXT DEFAULT (''), 
     datetime_update TEXT DEFAULT (''));""")
 cur.execute(
+    """CREATE TABLE IF NOT EXISTS chat (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, message TEXT, 
+    datetime TEXT);""")
+cur.execute(
+    """CREATE TABLE IF NOT EXISTS find_friends (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, text TEXT, 
+    time_zone TEXT, can_play_per_day TEXT, games TEXT, games_exp INTEGER, birthday TEXT);""")
+cur.execute(
     """CREATE TABLE IF NOT EXISTS gallery (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, 
     author TEXT, datetime TEXT, likes INTEGER DEFAULT(0), author_update TEXT DEFAULT (''), 
     datetime_update TEXT DEFAULT (''));""")
-cur.execute(
-    """CREATE TABLE IF NOT EXISTS chat (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, message TEXT, 
-    datetime TEXT);""")
+
 
 
 def databaserequest(text, params=[], commit=False, fetchone=False, aslist=False):

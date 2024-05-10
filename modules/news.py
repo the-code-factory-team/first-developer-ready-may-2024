@@ -3,8 +3,6 @@ from modules.functions import isloggin, databaserequest, cur, get_datetime_now
 
 news = Blueprint('news', __name__, template_folder='templates')
 
-wiki_categories = {'characters': "Персонажи", "weapons": "Оружие", "enemies": "Враги", "gameplay": "Геймплей"}
-
 
 @news.route('/news')
 def main_news():
@@ -32,35 +30,34 @@ def news_page(id):
 @news.route('/news_actions', methods=['GET', 'POST'])
 def news_actions():
     if not isloggin():
-        session['redirect'] = url_for("news.news_actions") + f"?action={request.args.get('action')}&id={request.args.get('id')}"
+        session['redirect'] = url_for("news.news_actions") + f"?id={request.args.get('id')}&delete={request.args.get('delete')}"
         return redirect(url_for('account_login'))
 
     if session['acctype'] < 1:
         return redirect(url_for('news.main_news'))
 
     if request.method == 'POST':
-        print(request.form.get("action"))
-        if request.form.get("action") == "add":
+        if request.form.get('id'):
+            databaserequest("UPDATE news SET title=?, content=?, author_update=?, "
+                            "datetime_update=? WHERE id=?",
+                            params=[request.form.get("title"), request.form.get("ckeditor"),
+                                    session['id'], get_datetime_now("%d.%m.%Y в %H:%I"), request.form.get("id")],
+                            commit=True)
+            return redirect(f'/news/{request.form.get("id")}')
+        else:
             databaserequest("INSERT INTO news(`title`, `content`, `author`, `datetime`) VALUES (?, ?, ?, ?)",
                             params=[request.form.get("title"), request.form.get("ckeditor"),
                                     session['id'], get_datetime_now("%d.%m.%Y в %H:%I")], commit=True)
             return redirect(f'/news/{cur.lastrowid}')
-        elif request.form.get("action") == "edit":
-            databaserequest("UPDATE news SET title=?, content=?, author_update=?, "
-                            "datetime_update=? WHERE id=?",
-                            params=[request.form.get("title"), request.form.get("ckeditor"),
-                                    session['id'], get_datetime_now("%d.%m.%Y в %H:%I"), request.form.get("id")], commit=True)
-            return redirect(f'/news/{request.form.get("id")}')
-        elif request.form.get('action') == "delete":
-            databaserequest("DELETE from wiki WHERE id=?", params=[request.form.get("id")], commit=True)
-            return redirect('/news')
     else:
-        if request.args.get('action') == "add":
-            return render_template("news/edit.html", title="Добавление новости", session=session)
-        elif request.args.get('action') == "edit":
+        if request.args.get("id") and request.args.get("id") != "None":
             edit = databaserequest("SELECT * FROM news WHERE id=?", params=[request.args.get("id")], fetchone=True)
             if edit is None:
-                return redirect(url_for('news.news_actions')+"?action=add")
+                return redirect(url_for('news.news_actions') + "?action=add")
             return render_template("news/edit.html", title="Редактирование новости",
                                    session=session, edit=edit)
+        elif request.args.get("delete") and request.args.get("delete") != "None":
+            databaserequest("DELETE from news WHERE id=?", params=[request.args.get("delete")], commit=True)
+        else:
+            return render_template("news/edit.html", title="Добавление новости", session=session)
     return redirect(url_for('news.main_news'))

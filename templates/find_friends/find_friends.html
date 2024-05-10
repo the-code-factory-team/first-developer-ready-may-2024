@@ -1,0 +1,30 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+
+    <div class="page-title">
+        <h1>Поиск команды</h1>
+    </div>
+
+    {% if 'id' in session %}
+        <a class="but right" href="/find_friends_actions" style="margin-bottom: 2em">Добавить заявку</a>
+    {% endif %}
+
+    <div>
+        {% for form in forms %}
+            <div class="news-block">
+                <p>{{ form['text'] }}</p>
+                <p>{{ form['desc'] }}</p>
+                <p>{{ form['info'] }}</p>
+                <a class="but-link" style="display: inline" href="/profile/id{{ form['user_id'] }}">Перейти в профиль</a>
+                {% if 'id' in session %}
+                    {% if form['user_id'] == session['id'] %}
+                        <a class="but" href="/find_friends_actions?id={{ form['id'] }}" style="display: inline-block">Редактировать</a>
+                        <a class="but but-red" href="/find_friends_actions?delete={{ form['id'] }}" style="display: inline-block">Удалить</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
