@@ -1,12 +1,16 @@
 {% extends "pagetemplate.html" %}
 
 {% block content %}
-    <a href="/" class="but but-red left">❮</a>
+    <a href="/" class="but but-red left">❮&emsp;На главную</a>
     <div class="page-title">
         <h1>Чат</h1>
     </div>
 
-    <div style="margin: 0 auto; background-color: #fff">
+    <div id="load" style="margin: 0 auto; background-color: #fff">
+        <img style="margin: 10% auto;display: block;" src="/static/img/icons/xbox-achievement-dead-chat.gif"/>
+    </div>
+
+    <div id="page" style="margin: 0 auto; background-color: #fff;display: none">
         <div id="messages" class="messages">
         </div>
         <hr>
@@ -121,6 +125,12 @@
 
         $(document).ready(function () {
             checkNewMessages(0);
+
+            setTimeout(function() {
+                $('#load').hide();
+                $('#page').show();
+                $('#messages').animate({"scrollTop": $('#messages')[0].scrollHeight}, "slow");
+            }, 4000);
 
             windowHeight = $(window).height();
 

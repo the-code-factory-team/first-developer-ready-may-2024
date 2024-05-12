@@ -1,0 +1,51 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <div class="page-title">
+		<img src="/static/img/icons/ayzek-wink.gif"/>
+		<h1>Галерея Ишимуры</h1>
+    </div>
+
+	{% if user_block_photos %}
+        <div class="error-block">
+            <p class="with-icon"><font class="icon">⚠️</font><br>Некоторые фото скрыты Модератором:{% for photo in user_block_photos %}<br>• <a href="/gallery_actions?id={{ photo[0] }}">{{ photo[1] }}</a>{% endfor %}<br><br>Пожалуйста обновите их в соответствии с правилами сообщества.</p>
+        </div>
+    {% endif %}
+
+	{% if 'id' in session %}
+        <a class="but right" href="/gallery_actions" style="margin-bottom: 2em">Добавить фото ➕</a>
+    {% endif %}
+
+    <div class="center">
+	{% for photo in photos %}
+		{% if photo['id'] not in block_photos %}
+			<div id="{{ photo['id'] }}" class="news-block">
+				{% if 'id' in session %}
+                    {% if session['acctype'] >= 2 %}
+                        <div style="display: inline-block">
+                            <a class="but but-red" style="display: inline-block" href="/gallery_actions?block={{ photo['id'] }}">Скрыть 🚫</a>
+                            {% if session['acctype'] >= 3 %}
+                                <a class="but but-red" style="display: inline-block" href="/gallery_actions?delete={{ photo['id'] }}">Удалить ❌</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+				<h3>{{ photo['title'] }}</h3>
+				<p>{{ photo['description'] }}</p>
+				<img src="/{{photo['photo_url']}}" style="width: 30em">
+
+				{% if 'id' in session %}
+					{% if photo['author'] == session['id'] %}
+						<div>
+							<a class="but" href="/gallery_actions?id={{ photo['id'] }}" style="display: inline-block">Редактировать ✏️</a>
+							<a class="but but-red but-danger" href="/gallery_actions?delete={{ photo['id'] }}" style="display: inline-block">Удалить ❌</a>
+						</div>
+					{% endif %}
+				{% endif %}
+			</div>
+		{% endif %}
+	{% endfor %}
+	
+	<a class="but but-red center" href="/" style="margin-top: 2em">❮&emsp;На главную</a>
+    </div>
+{% endblock %}

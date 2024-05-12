@@ -14,8 +14,8 @@
 
     {% if 'id' in session %}
         {% if session['acctype'] > 0 %}
-            <a style="display: inline-block" href="/news_actions?id={{ cur_news['id'] }}" class="but left">Редактировать</a>
-            <a style="display: inline-block" href="/news_actions?delete={{ cur_news['id'] }}" class="but but-red left">Удалить</a><br>
+            <a style="display: inline-block" href="/news_actions?id={{ cur_news['id'] }}" class="but left">Редактировать ✏️</a>
+            <a style="display: inline-block" href="/news_actions?delete={{ cur_news['id'] }}" class="but but-red left">Удалить ❌</a><br>
         {% endif %}
     {% endif %}
 

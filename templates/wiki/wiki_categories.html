@@ -2,6 +2,7 @@
 
 {% block content %}
     <div class="page-title">
+        <img src="/static/img/icons/ayzek-ventilation.gif"/>
         <h1>База данных Ишимуры</h1>
     </div>
 
@@ -15,7 +16,7 @@
             <br>
         {% endfor %}
 
-        {% if 'id' in session %}{% if session['acctype'] >= 1 %}<a class="but right" href="/wiki_add">Добавить страницу</a>{% endif %}{% endif %}
-        <a class="but but-red center" href="/wiki">Назад</a>
+        {% if 'id' in session %}{% if session['acctype'] >= 1 %}<a class="but right" href="/wiki_add">Добавить страницу ➕</a>{% endif %}{% endif %}
+        <a class="but but-red center" href="/wiki">❮&emsp;Назад</a>
     </div>
 {% endblock %}

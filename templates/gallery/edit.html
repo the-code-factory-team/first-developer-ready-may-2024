@@ -1,0 +1,48 @@
+{% extends 'pagetemplate.html' %}
+
+{% block content %}
+
+    <div class="page-title">
+        <h1>{% if edit %}Управление фото{% else %}Добавление фото{% endif %}</h1>
+    </div>
+
+    {% if edit %}
+        {% if edit['hide'] %}
+            <div class="error-block">
+                <p>Ваше фото скрыта Модератором! Пожалуйста, обновите его в соответствии с правилами сообщества.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <form action="/gallery_actions" method="post" class="form-block" enctype="multipart/form-data" style="width: 90%">
+        <label for="title">📌 Краткое описание</label>
+        <input id="title" type="text" name="title" placeholder="Интересный короткий заголовок, который завлечёт пользователей" {% if edit %} value="{{ edit['title'] }}" {% endif %} required/>
+
+        <label for="photo">🖼️ Фотография <font class="help-text">(максимум 10 МБ)</font></label>
+        {% if edit %}
+            <img src="/{{ edit['photo_url'] }}"/>
+        {% else %}
+            <input name="photo" id="photo" type="file" required>
+        {% endif %}
+
+        <label for="description">📄 Описание</label>
+        <textarea style="resize: none;margin-bottom: 0;height: 8vh" id="description" name="description" maxlength="300">{% if edit %}{{ edit['description'] }}{% endif %}</textarea>
+        <p class="right help-text" style="margin-bottom: 1.5em;display: block" id="text-length">0 из 300</p>
+
+        {% if edit %}<input type="hidden" name="id" value="{{ edit['id'] }}"/>{% endif %}
+
+        <button class="but but-green center" type="submit" style="margin-top: 2em">Далее&emsp;❱</button>
+        {% if edit %}<br><a class="but but-red center" href="/gallery_actions?delete={{ edit['id'] }}">Удалить фото ❌</a> {% endif %}
+    </form>
+
+
+<script>
+    $(document).ready(function() {
+        $('#text-length').text($('#description').val().length + ' из 300');
+    });
+
+    $('#description').keydown(function() {
+        $('#text-length').text($('#description').val().length + ' из 300')
+    });
+</script>
+{% endblock %}

@@ -4,7 +4,7 @@ import datetime
 
 wiki = Blueprint('wiki', __name__, template_folder='templates')
 
-wiki_categories = {'characters': "Персонажи", "weapons": "Оружие", "enemies": "Враги", "gameplay": "Геймплей"}
+wiki_categories = {'characters': "Персонажи 👱‍", "weapons": "Оружие 🔫", "enemies": "Враги 🧟‍", "gameplay": "Геймплей 🎮"}
 
 
 def databaserequest(req):

@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime
 
 import pytz
-from flask import session, redirect, url_for
+from flask import session, redirect, url_for, render_template
 
 acctypes = ["Игрок", "Редактор", "Модератор", "Администратор"]
 
@@ -15,7 +15,8 @@ cur.execute(
     website TEXT DEFAULT(''), vk TEXT DEFAULT(''), tg TEXT DEFAULT(''), discord TEXT DEFAULT(''));""")
 cur.execute(
     """CREATE TABLE IF NOT EXISTS news (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, author 
-    INTEGER, datetime TEXT, author_update INTEGER DEFAULT (0), datetime_update TEXT DEFAULT (''), likes INTEGER DEFAULT(0));""")
+    INTEGER, datetime TEXT, author_update INTEGER DEFAULT (0), datetime_update TEXT DEFAULT (''), 
+    likes INTEGER DEFAULT(0));""")
 cur.execute(
     """CREATE TABLE IF NOT EXISTS wiki (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, content TEXT, author 
     TEXT, datetime TEXT, likes INTEGER DEFAULT(0), category INTEGER, author_update TEXT DEFAULT (''), 
@@ -25,12 +26,11 @@ cur.execute(
     datetime TEXT);""")
 cur.execute(
     """CREATE TABLE IF NOT EXISTS find_friends (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER, text TEXT, 
-    time_zone TEXT, can_play_per_day TEXT, games TEXT, games_exp INTEGER, birthday TEXT);""")
+    time_zone TEXT, can_play_per_day TEXT, games TEXT, games_exp INTEGER, birthday TEXT, hide INTEGER DEFAULT(0));""")
 cur.execute(
     """CREATE TABLE IF NOT EXISTS gallery (id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, description TEXT, 
-    author TEXT, datetime TEXT, likes INTEGER DEFAULT(0), author_update TEXT DEFAULT (''), 
-    datetime_update TEXT DEFAULT (''));""")
-
+    author INTEGER, datetime TEXT, likes INTEGER DEFAULT(0), author_update TEXT DEFAULT (''), 
+    datetime_update TEXT DEFAULT (''), photo_url TEXT, hide INTEGER DEFAULT(0));""")
 
 
 def databaserequest(text, params=[], commit=False, fetchone=False, aslist=False):

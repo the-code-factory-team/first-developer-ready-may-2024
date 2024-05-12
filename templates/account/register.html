@@ -2,33 +2,33 @@
 
 {% block content %}
     <div class="page-title">
-        <h1>Регистрация</h1>
+        <h1>👋<br>Регистрация</h1>
     </div>
 
     <form action="/register" method="post" class="form-block">
-        <label>Электронная почта</label>
+        <label>📧 Электронная почта</label>
         <input name="email" type="email" placeholder="example@yandex.ru" required>
 
-        <label>Никнейм</label>
+        <label>🥸 Никнейм</label>
         <input name="nickname" type="text" placeholder="nickname" required>
 
-        <label>Имя</label>
+        <label>👉 Имя</label>
         <input name="first_name" type="text" placeholder="Иван" required>
 
-        <label>Фамилия</label>
+        <label>👉 Фамилия</label>
         <input name="last_name" type="text" placeholder="Иванов" required>
 
-        <label>Пароль</label>
-        <input name="password" type="password" placeholder="********" required>
+        <label>🔐 Пароль</label>
+        <input name="password" type="password" placeholder="🤫🤫🤫🤫🤫🤫" required>
 
-        <label>Повтор пароля</label>
-        <input name="password2" type="password" placeholder="********" required>
+        <label>🔐 Повтор пароля</label>
+        <input name="password2" type="password" placeholder="🤫🤫🤫🤫🤫🤫" required>
 
         {% if error %}
             {{ error|safe }}<br><br>
         {% endif %}
 
-        <button class="but center" type="submit">Зарегистрироваться</button>
-        <a class="but-link center" href="/auth">Я уже зарегистрирован</a>
+        <button class="but but-with-img center" type="submit">Зарегистрироваться <img src="/static/img/icons/ayzek-magic.gif"/></button>
+        <a class="but-link center" href="/auth">Я уже зарегистрирован 😉</a>
     </form>
 {% endblock %}

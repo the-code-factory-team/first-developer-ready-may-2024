@@ -27,7 +27,7 @@ import traceback
 from flask import render_template, redirect, session, url_for, request, jsonify, Flask
 from flask_ckeditor import CKEditor
 
-from modules import wiki, news, find_friends
+from modules import wiki, news, find_friends, gallery
 from modules.functions import cur, con, acctypes, isloggin, databaserequest, get_datetime_now
 
 app = Flask(__name__)
@@ -90,10 +90,12 @@ def account_login():
                 session['first_name'] = testaccount['first_name']
                 session['last_name'] = testaccount['last_name']
                 session['acctype'] = testaccount['acctype']
+
                 if 'redirect' in session:
                     redirecturl = session['redirect']
                     session.pop('redirect', None)
                     return redirect(redirecturl)
+
                 return redirect(url_for('account_view'))
 
         return render_template('account/login.html', title="Авторизация", session=session,
@@ -208,6 +210,7 @@ def create_app():
     app.register_blueprint(wiki.wiki)
     app.register_blueprint(news.news)
     app.register_blueprint(find_friends.find_friends)
+    app.register_blueprint(gallery.gallery)
     return app
 
 
