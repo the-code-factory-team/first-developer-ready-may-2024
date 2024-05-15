@@ -1,0 +1,26 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+<div class="page-title">
+    <h1>Добавление страницы</h1>
+</div>
+
+<form action="{{url_for('wiki.add_wiki')}}" method="post" class="form-block" style="width: 90%">
+    <label for="title">📌 Заголовок страницы</label>
+    <input type="text" id="title" name="title" placeholder="О ком/чём информация?" required>
+
+    <label for="category">📚 Категория</label>
+    <select id="category" name="category" required>
+	    <option value="characters">Персонажи 👱‍♂️</option>
+	    <option value="weapons">Оружие 🔫</option>
+	    <option value="enemies">Враги 🧟‍</option>
+	    <option value="gameplay">Геймплей 🎮</option>
+    </select>
+
+    <label for="ckeditor">📄 Содержание страницы</label>
+    {{ckeditor.load()}}
+    {{ckeditor.create()}}
+
+    <button type="submit" class="but but-green center" style="margin-top: 2em">Далее&emsp;❱</button>
+</form>
+{% endblock %}

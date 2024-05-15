@@ -1,0 +1,113 @@
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="/static/css/main.css"/>
+    <title>Главная - Dead Space Community</title>
+</head>
+<body>
+    <header>  
+        <div class="menu-content-line">
+            <a onmouseover="AnimeonHover('.main')" class="main" href=""
+                onmouseout="AnimeoffHover('.main')" id="line">Главная</a>
+            <a onmouseover="AnimeonHover('.news')" class="news" href="news" 
+                onmouseout="AnimeoffHover('.news')" id="line">Новости</a>
+            <a onmouseover="AnimeonHover('.wiki')" class="wiki" href="wiki"
+                onmouseout="AnimeoffHover('.wiki')" id="line">Википедия</a>
+            <a onmouseover="AnimeonHover('.galery')" class="galery" href="gallery"
+                onmouseout="AnimeoffHover('.galery')" id="line">Галерея</a>
+            <a onmouseover="AnimeonHover('.chat')" class="chat" href="chat"
+                onmouseout="AnimeoffHover('.chat')" id="line">Чат</a>
+            <a onmouseover="AnimeonHover('.search')" class="search" href="find_friends"
+                onmouseout="AnimeoffHover('.search')" id="line">Найти команду</a>
+            <a onmouseover="AnimeonHover('.auth')" class="auth" href="auth"
+                onmouseout="AnimeoffHover('.auth')" id="line">Авторизация</a>
+        </div>
+
+        <input value="Меню" type="button" id="btnmenu">
+        
+        <div class="menu-content-block">
+            <h2 id="title-menu">Контент</h2>
+            <div class="column">
+                <a href="">Главная</a>
+                <a href="news">Новости</a>
+                <a href="wiki">Википедия</a>
+                <a href="gallery">Галерея</a>
+                <a href="chat">Чат</a>
+                <a href="find_friends">Найти команду</a>
+                <a href="auth">Авторизация</a>
+            </div>
+        </div>
+    </header> 
+
+
+
+    <div class="landing-block" id="block1">
+        <div class="content1">
+            <h1 id="title">Dead Space</h1>
+            <p id="description">Dead Space - серия игр в жанре survival horror, состоящая из трёх частей и одного ремейка. 
+            Вы играете за Айзека Кларка - простого инженера, который попал в ад из некроморфов и должен бороться за своё выживание. Сражайтесь с чудовищами, решайте различные головоломки и прокладывайте себе путь к спасению через кошмар.
+            А на этом сайте вы можете узнать подробнее об играх и найти себе друзей, чтобы вместе сражаться с некроморфами.
+            Станьте едиными, и сделайте едиными нас.</p>
+            <iframe id="video" width="560" height="315" src="https://www.youtube.com/embed/G5JviLRgXes?si=J2ZIROl0OmNgHPhc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        
+        
+    </div>
+
+    <div class="landing-block" id="block2">
+        <div class="content2">
+            <h1 id="global_title">Возможности нашего сайта</h1>
+            <div class="blocks">
+                <div class="txt-block" id="txt1">
+                    <h2>Чат и поиск друзей</h2>
+                    <p>Общайтесь с другими игроками, делитесь впечатлениями и своими идеями по игре. В условиях эпидемии некроморфов командная работа - ключ к успеху. Находите друзей, с которыми вы можете вместе играть, в том числе в кооперативный режим Dead Space 3. Будьте уверены - вы обязательно найдёте того, с кем у вас общие интересы!</p>
+                </div>
+
+                <div class="txt-block" id="txt2">
+                    <h2>Галерея</h2>
+                    <p>Делитесь своими удивительными кадрами из игр, опубликовав их в галерее. Ни одно новое открытие не должно остаться незамеченным!</p>
+                </div>
+                
+                <div class="txt-block" id="txt3">
+                    <h2>Википедия</h2>
+                    <p>Узнавайте информацию о персонажах, оружии, врагах или элементах геймплея в базе данных Ишимуры. Также можно добавлять по свои страницы, чтобы информации было ещё больше!</p>
+                </div>
+            </div>    
+        </div>
+    </div>
+
+    <div class="landing-block" id="block3">
+        <div class="content3">
+            <h1>Скриншоты игры</h1>
+            <div class="slider-container">
+                <div class="slider">
+                  <img src="/static/img/main/screen1.jpg">
+                  <img src="/static/img/main/screen2.jpeg">
+                  <img src="/static/img/main/screen3.jpg">
+                  <img src="/static/img/main/screen4.webp">
+                  <img src="/static/img/main/screen5.png">
+                  <img src="/static/img/main/screen6.jpg">
+                  <img src="/static/img/main/screen7.jpeg">
+                  <img src="/static/img/main/screen8.jpeg">
+                </div>
+                <button class="prev-button" aria-label="Посмотреть предыдущий слайд">&lt</button>
+                <button class="next-button" aria-label="Посмотреть следующий слайд">&gt</button>
+              </div>
+            <div class="footer">
+                <hr class="text-muted">
+                <p class="text-muted" style="text-align: center">
+                © 2024 
+                <a target="_blank" href="https://github.com/the-code-factory-team">The Code Factory</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/scripts/anime.min.js"></script>
+    <script src="/static/scripts//main.js"></script>
+</body>
+</html>
+{% endblock %}

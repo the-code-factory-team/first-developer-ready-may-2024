@@ -1,0 +1,92 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+
+    <div class="page-title">
+        <h1>{% if edit%}Управление заявкой{% else %}Добавление заявки{% endif%}</h1>
+    </div>
+
+    {% if edit %}
+        {% if edit['hide'] %}
+            <div class="error-block">
+                <p>Ваша заявка скрыта Модератором! Пожалуйста, обновите её в соответствии с правилами сообщества.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <form action="/find_friends_actions" method="post" class="form-block" style="width: 90%">
+        <label for="text">📄 Небольшое описание <font class="help-text">необязательно</font><br><font class="error" style="font-size:0.8em">Не указывайте в данном поле свои персональные данные, ссылки для связи с Вами и информацию, которую можно указать в форме ниже.<br>Всю эту информацию можно изменить в <a class="error url-in-text" href="/account">настройках аккаунта</a>.</font></label>
+        <textarea style="resize: none;margin-bottom: 0;height: 8vh" id="text" name="text" maxlength="300">{% if edit %}{{ edit['text'] }}{% endif %}</textarea>
+        <p class="right help-text" style="margin-bottom: 1.5em;display: block" id="text-length">0 из 300</p>
+
+
+        <label for="time_zone">🕑 Мой часовой пояс <font class="help-text error">*</font></label>
+        <select id="time_zone" name="time_zone" required>
+            {% for time_zone in time_zones %}
+                <option value="{{ time_zone }}" {% if edit %}{% if edit['time_zone'] == time_zone %} selected {% endif %}{% elif time_zone == 'Europe/Moscow' %}selected{% endif %}>{{ time_zone }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="birthday">🥳 Мой день рождения <font class="help-text error">*</font></label>
+        <input type="date" name="birthday" id="birthday" value="{% if edit %}{{ edit['birthday'] }}{% endif %}" required/>
+
+
+
+        <label>🎮 Я играю в <font class="help-text error">*</font><br><font id="game-error-text" class="error" style="font-size:0.9em;">Выберите хотя-бы одну игру!</font></label>
+
+        <label for="dead_space_1">
+            <input id="dead_space_1" type="checkbox" name="dead_space_1" {% if edit %}{% if "1" in edit['games'] %} checked {% endif %}{% endif %}/>
+            Dead Space 1
+        </label>
+
+        <label for="dead_space_2">
+            <input id="dead_space_2" type="checkbox" name="dead_space_2" {% if edit %}{% if "2" in edit['games'] %} checked {% endif %}{% endif %}/>
+            Dead Space 2
+        </label>
+
+        <label for="dead_space_3">
+            <input id="dead_space_3" type="checkbox" name="dead_space_3" {% if edit %}{% if "3" in edit['games'] %} checked {% endif %}{% endif %}/>
+            Dead Space 3
+        </label>
+
+        <label for="dead_space_4" style="margin-bottom: 1.5em">
+            <input id="dead_space_4" type="checkbox" name="dead_space_4" {% if edit %}{% if "4" in edit['games'] %} checked {% endif %}{% endif %}/>
+            Dead Space Remake
+        </label>
+
+
+
+        <label for="games_exp">👴 Я играю уже (лет) <font class="help-text error">*</font></label>
+        <input id="games_exp" name="games_exp" type="number" min="0" max="50" {% if edit %}value="{{ edit['games_exp'] }}"{% endif %} required>
+
+        {% if edit %}<input type="hidden" name="id" value="{{ edit['id'] }}"/>{% endif %}
+
+        <button class="but but-green center" type="submit" id="submit-but" style="margin-top: 2em" disabled>Далее&emsp;❱</button>
+        {% if edit %}<br><a class="but but-red center" href="/find_friends_actions?delete={{ edit['id'] }}">Удалить заявку ❌</a> {% endif %}
+    </form>
+
+<script>
+
+    function checkGames() {
+        if($('#dead_space_1').is(':checked') || $('#dead_space_2').is(':checked') || $('#dead_space_3').is(':checked') || $('#dead_space_4').is(':checked')) {
+            $('#game-error-text').hide();
+            $('#submit-but').prop('disabled', false);
+        }
+        else {
+            $('#game-error-text').show();
+            $('#submit-but').prop('disabled', true);
+        }
+    }
+
+    $(document).ready(function() {
+        checkGames();
+        $('#text-length').text($('#text').val().length + ' из 300');
+    });
+    $('input[type=checkbox]').on('click', checkGames);
+
+    $('#text').keydown(function() {
+        $('#text-length').text($('#text').val().length + ' из 300');
+    });
+</script>
+
+{% endblock %}

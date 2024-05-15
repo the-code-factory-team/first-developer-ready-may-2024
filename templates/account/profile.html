@@ -1,0 +1,37 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <div class="form-block">
+        <h1 class="center">{{ profile['first_name'] }} {{ profile['last_name'] }}</h1>
+        <h2 class="center">{{ profile['nickname'] }}</h2>
+        <div class="profile-socials">
+            {% if profile['website'] %}
+                <a style="background: url('/static/img/icons/website.png');" href="{{ profile['website'] }}" target="_blank"></a>
+            {% endif %}
+
+            {% if profile['vk'] %}
+                <a style="background: url('/static/img/icons/vk.png');" href="{{ profile['vk'] }}" target="_blank"></a>
+            {% endif %}
+
+            {% if profile['tg'] %}
+                <a style="background: url('/static/img/icons/telegram.png');" href="{{ profile['tg'] }}" target="_blank"></a>
+            {% endif %}
+        </div>
+
+        <div class="profile-discord center" >
+            {% if profile['discord'] %}
+                <img src="/static/img/icons/discord.png">
+                <input type="text" disabled value="{{ profile['discord'] }}">
+            {% endif %}
+        </div>
+        {% if profile['about'] %}
+        <hr class="profile-hr">
+        <div class="profile-row">
+            <p class="help-text">Описание</p>
+            <p>{{ profile['about'] }}</p>
+        </div>
+        {% endif %}
+
+
+    </div>
+{% endblock %}

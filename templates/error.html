@@ -1,0 +1,13 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+
+    <div class="page-title">
+        <h1>Ой, ошибка</h1>
+    </div>
+
+    <div class="form-block">
+        <p class="center">{{ error|safe }}</p>
+    </div>
+
+{% endblock %}

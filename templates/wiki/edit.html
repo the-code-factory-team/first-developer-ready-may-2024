@@ -1,0 +1,27 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+<div class="page-title">
+    <h1>Изменение страницы</h1>
+</div>
+
+<form action="{{url_for('wiki.edit_wiki', id=id)}}" method="post" class="form-block" style="width: 90%">
+    <label for="title">📌 Заголовок</label>
+    <input type="text" id="title" name="title" placeholder="О ком/чём информация?" value="{{cur_wiki[0]['title']}}" required>
+
+    <label for="category">📚 Категория</label>
+    <select id="category" name="category" required>
+        <option value="characters" {% if cur_wiki[0]['category'] == 'characters' %} selected {% endif%}>Персонажи 👱‍♂️</option>
+        <option value="weapons" {% if cur_wiki[0]['category'] == 'weapons' %} selected {% endif%}>Оружие 🔫</option>
+        <option value="enemies" {% if cur_wiki[0]['category'] == 'enemies' %} selected {% endif%}>Враги 🧟‍♂️</option>
+        <option value="gameplay" {% if cur_wiki[0]['category'] == 'gameplay' %} selected {% endif%}>Геймплей 🎮</option>
+    </select>
+
+    <label for="ckeditor">📄 Содержание страницы</label>
+    {{ckeditor.load()}}
+    {{ckeditor.create(value=cur_wiki[0]["content"])}}
+
+
+    <button type="submit" class="but but-green center" style="margin-top: 2em">Далее&emsp;❱</button>
+</form>
+{% endblock %}

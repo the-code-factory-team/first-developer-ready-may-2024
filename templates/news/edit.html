@@ -1,0 +1,26 @@
+{% extends 'pagetemplate.html' %}
+
+{% block content %}
+
+    <div class="page-title">
+        <h1>{% if edit %}Управление новостью{% else %}Добавление новости{% endif %}</h1>
+    </div>
+
+    <form action="/news_actions" method="post" class="form-block" style="width: 90%">
+        <label for="title">📌 Заголовок новости</label>
+        <input id="title" type="text" name="title" placeholder="Интересный короткий заголовок, который завлечёт пользователей" {% if edit %} value="{{ edit['title'] }}" {% endif %} required/>
+
+        <label for="ckeditor">📄 Содержание новости</label>
+        {{ckeditor.load()}}
+        {% if edit %}
+            {{ckeditor.create(value=edit['content'])}}
+        {% else %}
+            {{ckeditor.create()}}
+        {% endif %}
+
+        {% if edit %}<input type="hidden" name="id" value="{{ edit['id'] }}"/>{% endif %}
+
+        <button class="but but-green center" type="submit" style="margin-top: 2em">Далее&emsp;❱</button>
+    </form>
+
+{% endblock %}

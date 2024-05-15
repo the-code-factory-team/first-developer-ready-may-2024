@@ -1,0 +1,25 @@
+{% extends "pagetemplate.html" %}
+
+{% block content %}
+    <div class="page-title">
+        <img src="/static/img/icons/ayzek-ventilation.gif"/>
+        <h1>База данных Ишимуры</h1>
+    </div>
+
+    <div class="center">
+        <h3 style="margin-bottom: 2em">{{ category }}</h3>
+
+        <div class="flex-container">
+            {% for wiki in wikis %}
+                <a class="div-block" href="/wiki/{{wiki["id"]}}">
+                    <h3>{{wiki["title"]}}</h3>
+                    <p>Автор: {{wiki["author"]}}</p>
+                    <p class="datetime">{{wiki["datetime"]}}</p>
+                </a>
+            {% endfor %}
+        </div>
+
+        {% if 'id' in session %}{% if session['acctype'] >= 1 %}<a class="but right" href="/wiki_add">Добавить страницу ➕</a>{% endif %}{% endif %}
+        <a class="but but-red center" href="/wiki">❮&emsp;Назад</a>
+    </div>
+{% endblock %}

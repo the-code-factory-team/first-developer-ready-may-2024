@@ -1,0 +1,27 @@
+{% extends 'pagetemplate.html' %}
+
+{% block content %}
+    <div class="page-title">
+        <img src="/static/img/icons/ayzek-fire.gif"/>
+        <h1>Новости</h1>
+    </div>
+
+    {% if 'id' in session %}
+        {% if session['acctype'] > 0 %}
+            <a class="but right" href="/news_actions" style="margin-bottom: 2em">Добавить новость ➕</a>
+        {% endif %}
+    {% endif %}
+
+    <div class="flex-container">
+        {% for new in news %}
+        <a class="div-block" href="/news/{{ new['id'] }}">
+            <h3>{{ new['title'] }}</h3>
+            <p class="datetime">{{ new['datetime'] }}</p>
+            <p>{{ new['content'][:100]|striptags }}...</p>
+        </a>
+        {% endfor %}
+    </div>
+
+<a class="but but-red center" href="/" style="margin-top: 2em">❮&emsp;На главную</a>
+
+{% endblock %}
