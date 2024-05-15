@@ -13,7 +13,7 @@
 
         <div class="right">
             <p style="display: block" class="help-text">{{ author }} опубликовал {{ cur_news['datetime'] }}</p>
-            {% if cur_news['datetime_update']|length > 0 %}<p class="help-text">{{ author_update }} обновил {{ cur_news['datetime_update'] }}</p>{% endif %}
+            {% if cur_news['datetime_update']|length > 0 %}<p style="display: block" class="help-text">{{ author_update }} обновил {{ cur_news['datetime_update'] }}</p>{% endif %}
 
             {% if 'id' in session %}
                 {% if session['acctype'] > 0 %}

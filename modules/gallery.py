@@ -31,9 +31,6 @@ def gallery_actions():
             "gallery.gallery_actions") + f"?id={request.args.get('id')}&delete={request.args.get('delete')}"
         return redirect(url_for('account_login'))
 
-    if session['acctype'] < 1:
-        return redirect(url_for('gallery.main_gallery'))
-
     if request.method == 'POST':
         if request.form.get('id'):
             databaserequest("UPDATE gallery SET title=?, description=?, author_update=?, "
