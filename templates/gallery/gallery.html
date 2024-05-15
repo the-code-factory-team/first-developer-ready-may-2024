@@ -16,10 +16,10 @@
         <a class="but right" href="/gallery_actions" style="margin-bottom: 2em">Добавить фото ➕</a>
     {% endif %}
 
-    <div class="center">
+    <div class="flex-container big-flex-container">
 	{% for photo in photos %}
 		{% if photo['id'] not in block_photos %}
-			<div id="{{ photo['id'] }}" class="news-block">
+			<div id="{{ photo['id'] }}" class="div-block">
 				{% if 'id' in session %}
                     {% if session['acctype'] >= 2 %}
                         <div style="display: inline-block">
@@ -30,9 +30,10 @@
                         </div>
                     {% endif %}
                 {% endif %}
-				<h3>{{ photo['title'] }}</h3>
-				<p>{{ photo['description'] }}</p>
-				<img src="/{{photo['photo_url']}}" style="width: 30em">
+				<h3 class="center">{{ photo['title'] }}</h3>
+				<p class="center" style="margin-bottom: 1em">{{ photo['description'] }}</p>
+				<img class="gallery-img" id="{{ photo['id'] }}-img" src="/{{photo['photo_url']}}">
+				<p class="help-text right" style="display: block !important;">нажмите 2 раза на картинку, чтобы рассмотреть её ближе</p>
 
 				{% if 'id' in session %}
 					{% if photo['author'] == session['id'] %}
@@ -45,7 +46,25 @@
 			</div>
 		{% endif %}
 	{% endfor %}
-	
-	<a class="but but-red center" href="/" style="margin-top: 2em">❮&emsp;На главную</a>
     </div>
+
+	<a class="but but-red center" href="/" style="margin-top: 2em">❮&emsp;На главную</a>
+
+<script>
+	let _oldclick = 0;
+	$(document).ready(function() {
+		$('.gallery-img').click(function() {
+			console.log('');
+			console.log(_oldclick);
+			console.log($(this).attr('id'));
+
+			if($(this).attr('id') === _oldclick) {
+				console.log($(this).attr('src'));
+				window.open($(this).attr('src'), '_blank');
+				_oldclick = 0;
+			}
+			else _oldclick = $(this).attr('id');
+		});
+	});
+</script>
 {% endblock %}

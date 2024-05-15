@@ -17,9 +17,9 @@
         </div>
     {% endif %}
 
-    <div>
+    <div class="flex-container big-flex-container">
         {% for form in forms %}
-            <div id="{{ form['id'] }}" class="news-block">
+            <div id="{{ form['id'] }}" class="div-block">
                 {% if 'id' in session %}
                     {% if session['acctype'] >= 2 %}
                         <div style="display: inline-block">
@@ -30,14 +30,16 @@
                         </div>
                     {% endif %}
                 {% endif %}
-                <p>{{ form['text'] }}</p>
+                <h3>{{ form['text'] }}</h3>
                 <p>{{ form['desc'] }}</p>
                 <p>{{ form['info'] }}</p>
                 <a class="but-link" style="display: inline" href="/profile/id{{ form['user_id'] }}">Перейти в профиль 👤</a>
                 {% if 'id' in session %}
                     {% if form['user_id'] == session['id'] %}
-                        <a class="but" href="/find_friends_actions?id={{ form['id'] }}" style="display: inline-block">Редактировать ✏️</a>
-                        <a class="but but-red" href="/find_friends_actions?delete={{ form['id'] }}" style="display: inline-block">Удалить ❌</a>
+                        <div>
+                            <a class="but" href="/find_friends_actions?id={{ form['id'] }}" style="display: inline-block">Редактировать ✏️</a>
+                            <a class="but but-red" href="/find_friends_actions?delete={{ form['id'] }}" style="display: inline-block">Удалить ❌</a>
+                        </div>
                     {% endif %}
                 {% endif %}
             </div>

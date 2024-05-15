@@ -137,11 +137,10 @@ def account_quit():
 @app.route('/profile', defaults={'nickname': None})
 @app.route('/profile/<nickname>')
 def profile(nickname=None):
-    if not isloggin():
-        session['redirect'] = url_for("profile")
-        return redirect(url_for('account_login'))
-
     if not nickname:
+        if not isloggin():
+            session['redirect'] = url_for("profile")
+            return redirect(url_for('account_login'))
         account = databaserequest("SELECT * FROM `accounts` WHERE `id`=?", params=[int(session['id'])],
                                   fetchone=True)
     elif 'id' in nickname:

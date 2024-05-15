@@ -1,5 +1,5 @@
 :root {
-    --black-text-color: #333;
+    --black-text-color: #d5d5d5;
     --light-green-color: #2ed22e;
     --green-color: #329b32;
     --light-red-color: #f26150;
@@ -22,6 +22,12 @@ html, body {
     height: 100%;
     margin: 0;
     overflow-x: hidden;
+    color: var(--black-text-color);
+    background: #171717;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: white;
 }
 
 * {
@@ -69,12 +75,10 @@ header {
     > div {
         display: inline;
         box-sizing: border-box;
-        flex-basis: 100%;
-        -ms-flex-preferred-size: 100%;
     }
 
     > div:last-child {
-        margin-right: 1em;
+        margin-right: 0.5em;
         display: flex;
         align-content: center;
 
@@ -84,7 +88,26 @@ header {
     }
 
     > div:first-child {
-        margin-left: 1em;
+        margin-left: 0.5em;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    header {
+        width: 100%;
+        flex: 0 0 auto;
+        overflow: auto;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+
+        > div:last-child {
+            margin-right: 1em;
+        }
+
+        > div:first-child {
+            margin-left: 1em;
+        }
     }
 }
 
@@ -121,11 +144,11 @@ footer {
 }
 
 .form-block {
-    border-radius: 0.4em;
-    box-shadow: 0 0 5px;
+    border-radius: 0.8em;
+    border: 2px solid white;
     padding: 3em 3em;
     width: 25%;
-    min-width: 330px;
+    min-width: 300px;
     height: fit-content;
     margin: 0 auto;
 
@@ -138,6 +161,59 @@ footer {
         width: fit-content;
         display: inline;
     }
+}
+
+.div-block {
+    display: block;
+    padding: 15px 25px;
+    width: 95%;
+    margin: 0 auto 2em;
+    border-radius: 0.8em;
+    border: 2px solid var(--black-text-color);
+
+    * {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .datetime {  /* время публикации новости */
+        color: var(--select-text-color);
+        margin-bottom: 1em;
+    }
+}
+.div-block:hover {
+    border: 2px solid white;
+    box-shadow: 0 0 5px white;
+}
+
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    margin: 0 auto;
+    width: 95%;
+
+    .div-block {
+        width: calc(100% - 20px);
+    }
+}
+
+@media screen and (min-width: 768px) {
+  .flex-container .div-block {
+    width: calc(50% - 30px);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .flex-container .div-block {
+    width: calc((100% - 30px)/4);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .big-flex-container .div-block {
+    width: calc(100%/2.5);
+  }
 }
 
 .url-in-text {
@@ -207,8 +283,8 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
     display: block;
     padding: 0.5em 2em;
     width: fit-content;
-    line-height: 1.3em;
-    font-size: 1.1em;
+    line-height: 1.2em;
+    font-size: 1em;
     color: var(--black-text-color);
     border: 0.15em solid var(--black-text-color);
     text-align: center;
@@ -225,6 +301,10 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
     }
 }
 
+@media screen and (min-width: 1024px) {
+    font-size: 1.1em;
+}
+
 .but-with-img {
     line-height: 3em;
 
@@ -238,31 +318,34 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
 }
 
 .but:hover{
-    color: #fff;
-    background: black;
-    border-color: var(--black-text-color);
+    color: #171717;
+    background: white;
+    border-color: white;
+    box-shadow: 0 0 5px white;
     transition: all .35s;
 }
 
 .but-green {
     color: var(--light-green-color);
-    border-color: var(--green-color);
+    border-color: var(--light-green-color);
 }
 
 .but-green:hover{
-    border-color: var(--light-green-color);
-    background: var(--green-color);
+    border-color: var(--green-color);
+    background: var(--light-green-color);
     color: #fff;
+    box-shadow: 0 0 5px var(--green-color);
 }
 
 .but-red {
     color: var(--light-red-color);
-    border-color: var(--red-color);
+    border-color: var(--light-red-color);
 }
 .but-red:hover{
-    border-color: var(--light-red-color);
-    background: var(--red-color);
+    border-color: var(--red-color);
+    background: var(--light-red-color);
     color: #fff;
+    box-shadow: 0 0 5px var(--red-color);
 }
 
 .but-link {
@@ -284,6 +367,7 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
     color: #f2a600;
     border-color: #ff9329;
 }
+/* =========== */
 
 
 /* ЧАТ */
@@ -297,7 +381,7 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
     width: 100%;
 
     div { /* блок сообщения */
-        border: 1px solid black;
+        border: 1px solid white;
         padding: 5px 10px;
         max-width: 45%;
         border-radius: 0.4em;
@@ -310,7 +394,7 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
 
     a:first-child { /* Автор */
         display: block;
-        color: var(--black-text-color);
+        color: white;
         font-size: 0.9em;
         margin-bottom: 0;
         margin-top: 0.4em;
@@ -321,6 +405,7 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
         margin-bottom: 0;
         word-wrap: break-word;
         hyphens: auto;
+        color: var(--black-text-color)
     }
 
     p:last-child { /* время сообщения */
@@ -334,45 +419,76 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
     }
 
     .msg-from-user {
-        background: var(--dark-white-color);
+        background: #242424;
         float: right !important;
         margin-right: 0.5em;
         margin-left: 0;
     }
 
     .not-read {
-        background: var(--not-select-text-color);
+        background: #2d2d2d;
     }
 }
 .msg-area:hover {
-    background: var(--hover-white-color) !important;
+    background: #1d1d1d !important;
 
     p:last-child {
         opacity: 1;
     }
 }
+/* =========== */
 
-/* НОВОСТИ */
-.news-block {
-    display: block;
-    padding: 5px 15px;
-    width: 95%;
-    margin: 0 auto 2em;
-    border-radius: 0.4em;
-    box-shadow: 0 0 5px;
+/* ГАЛЕРЕЯ */
+.gallery-img {
+    border-radius: 0.8em;
+    width: 100%;
+}
+/* =========== */
 
-    h4 {
-        margin-bottom: 0;
+/* ПРОФИЛЬ */
+.profile-socials {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    margin: 2em auto 0 auto;
+
+    a {
+        border-radius: 0.8em;
+        width: 3em;
+        height: 3em;
+        background-size: 100% 100% !important;
+    }
+}
+
+.profile-discord {
+    margin: 1em auto 0 auto;
+    width: 15em;
+
+    * {
+        display: inline;
     }
 
-    p {  /* Текст новости (краткое) */
+    img {
+        width: 2em;
+        margin-right: 0.5em;
+    }
+    input {
+        width: 10em;
+        vertical-align: top;
+    }
+}
+
+.profile-row {
+    p:first-child {
+        font-size: 0.9em;
+    }
+
+    p {
         margin-top: 0;
     }
+}
 
-    .news-datetime {  /* время публикации новости */
-        color: var(--select-text-color);
-    }
+.profile-hr {
+    margin: 2em auto;
 }
-.news-block:hover {
-    background: var(--hover-white-color);
-}
+/* =========== */

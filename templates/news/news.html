@@ -12,13 +12,15 @@
         {% endif %}
     {% endif %}
 
-    {% for new in news %}
-    <a class="news-block" href="/news/{{ new['id'] }}">
-        <h4>{{ new['title'] }}</h4>
-        <p class="news-datetime">{{ new['datetime'] }}</p>
-        <p>{{ new['content'][:100]|striptags }}...</p>
-    </a>
-    {% endfor %}
+    <div class="flex-container">
+        {% for new in news %}
+        <a class="div-block" href="/news/{{ new['id'] }}">
+            <h3>{{ new['title'] }}</h3>
+            <p class="datetime">{{ new['datetime'] }}</p>
+            <p>{{ new['content'][:100]|striptags }}...</p>
+        </a>
+        {% endfor %}
+    </div>
 
 <a class="but but-red center" href="/" style="margin-top: 2em">❮&emsp;На главную</a>
 

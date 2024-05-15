@@ -68,7 +68,7 @@ def edit_wiki(id):
             author = session['nickname']
 
             databaserequest(f'''UPDATE wiki SET title='{title}', content='{content}', 
-            datetime='{date_time}', author='{author}', category='{category}' WHERE id='{id}' ''')
+            datetime_update='{date_time}', author_update='{author}', category='{category}' WHERE id='{id}' ''')
             return redirect('/wiki')
         except KeyError:
             abort(413)
