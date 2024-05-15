@@ -1,5 +1,4 @@
 from datetime import date, datetime
-from pprint import pprint
 
 import pytz
 from flask import Blueprint, render_template, request, redirect, session, url_for
