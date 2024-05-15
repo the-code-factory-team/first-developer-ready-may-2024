@@ -2,7 +2,7 @@ import sqlite3
 from datetime import datetime
 
 import pytz
-from flask import session, redirect, url_for
+from flask import session, redirect, url_for, render_template
 
 acctypes = ["Игрок", "Редактор", "Модератор", "Администратор"]
 

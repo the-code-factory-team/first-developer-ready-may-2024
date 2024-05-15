@@ -26,7 +26,9 @@ html, body {
     margin: 0;
     overflow-x: hidden;
     color: var(--black-text-color);
-    background: #171717;
+    background-image: url('../img/fon_global.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -166,6 +168,7 @@ footer {
     display: block;
     padding: 15px 25px;
     width: 95%;
+    background-color: #171717;
     margin: 0 auto 2em;
     border-radius: 0.8em;
     border: 2px solid var(--black-text-color);
@@ -428,13 +431,7 @@ input:not([type=checkbox]):active, input:not([type=checkbox]):focus, textarea:ac
         background: #2d2d2d;
     }
 }
-.msg-area:hover {
-    background: #1d1d1d !important;
 
-    p:last-child {
-        opacity: 1;
-    }
-}
 /* =========== */
 
 /* ГАЛЕРЕЯ */
