@@ -1,0 +1,4 @@
+flask
+flask_ckeditor
+pytz
+werkzeug

@@ -1,0 +1,17 @@
+После запуска main.py, сайт будет доступен по локальному адресу: http://localhost
+
+Тестовые аккаунты:
+
+Администратор:
+Логин - admin@deadspace.com
+Пароль - 123123
+
+Модератор:
+Логин - moderator@deadspace.com
+Пароль - 123123
+
+Редактор:
+Логин - redaktor@deadspace.com
+Пароль - 123123
+
+Адрес сайта - https://thecodefactoryteam.pythonanywhere.com
